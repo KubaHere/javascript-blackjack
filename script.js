@@ -27,7 +27,6 @@ function getRandomCard() {
     }
 }
 
-
 function startGame() {
     isAlive = true
     let firstCard = getRandomCard()
@@ -39,6 +38,7 @@ function startGame() {
     document.getElementById('hit-button').style.display = 'inline-block'
     renderGame()
 }
+
 function continueFunc(){
     hasBlackJack = false
     cardsEl.textContent = "Cards: "
@@ -52,7 +52,6 @@ function continueFunc(){
 
 }
 
-
 function resetGame(){
     if (isAlive === false || hasBlackJack){
         message = 'Want to play another round?'
@@ -65,9 +64,6 @@ function resetGame(){
 }
 
 function timeout(){setTimeout(function (){resetGame()},1500)}
-
-
-
 
 function renderGame() {
     cardsEl.textContent = "Cards: "
@@ -93,7 +89,6 @@ function renderGame() {
     }
     messageEl.innerHTML = message
 }
-
 
 function newCard() {
     if (isAlive === true && hasBlackJack === false) {
