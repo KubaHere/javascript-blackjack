@@ -6,11 +6,13 @@
         <h1>Blackjack</h1>
         <p id="message-el">Want to play a round?</p>
         <p id="cards-el">Cards:</p>
-        <p id="sum-el">Sum:</p>
+        <p id="total-el">Total:</p>
         <div id="container">
             <div id="game-buttons">
-            <button onclick="startGame()">START GAME</button>
-            <button onclick="newCard()">NEW CARD</button>
+            <button id="stand-button" onclick ='standFunc()'>STAND</button>
+            <button id='start-button'onclick="startGame()">START GAME</button>
+            <button id='hit-button'onclick="newCard()">HIT</button>
+            <button id="continue-button" onclick='continueFunc()'>CONTINUE</button>
             </div>
         </div>
         <p id="player-el"></p>
