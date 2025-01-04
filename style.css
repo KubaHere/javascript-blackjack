@@ -1,23 +1,37 @@
 body {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', Arial, sans-serif;
+    font-family:'Oswald';
     background-color:rgb(23, 100, 46);
     background-size: cover;
     font-weight: bold;
     color: white;
     text-align: center;
 }
+button{
+    cursor: pointer;
+    border-radius: 4px;
+}
+
 #container{
     display: flex;          
     justify-content: center; 
     align-items: center;    
-    margin: 0;  
+    margin: 0; 
+}
+#start-bet-btns{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+#bet-input {
+    display: none; 
+  }
+.hidden {
+    display: none;
 }
 h1 {
     color: goldenrod;
-}
-
-#message-el {
-    font-style: italic;
 }
 #busted-txt{
     color:red;
@@ -26,36 +40,53 @@ h1 {
     color:goldenrod;
     font-size: 8vh;
 }
-#stand-button{
-    display: none;
-}
+
 #continue-button{
     display:none;
     background:red;
     border: 2px solid black;
+    color: #000000;
+    width: 150px;
+    height: 8vh;
+    font-weight: bold;
+    border: none;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: 8px;
+    margin-right: 8px;
+    margin-bottom: 4px;
+    margin-top: 2px;
 }
 #start-button{
     display: inline-block;
 }
-#hit-button{
+#hit-button,#stand-button{
     display:none;
 }
-button {
-    cursor: pointer;
+#place-bet-button{
     align-items: center;
-    justify-content: center;
+    font-weight: bold;
+    background:rgb(33, 211, 63);
+    width:8vh;
+    height: 8vh;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left:0px;
+    margin-right: 0px;
+    margin-bottom: 4px;
+    margin-top: 2px;
+}
+#stand-button,#start-button,#hit-button {
     color: #000000;
     width: 150px;
     background: goldenrod;
-    height: 15vh;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    height: 8vh;
     font-weight: bold;
     border: none;
-    margin-left: 10px;
-    margin-right: 10px;
-    border-radius: 4px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: 8px;
+    margin-right: 8px;
     margin-bottom: 4px;
     margin-top: 2px;
-    
 }
