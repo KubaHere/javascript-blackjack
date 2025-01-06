@@ -30,6 +30,9 @@ button{
 .hidden {
     display: none;
 }
+#bet{
+    width:50px;
+}
 h1 {
     color: goldenrod;
 }
