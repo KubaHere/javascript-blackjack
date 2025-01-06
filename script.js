@@ -4,7 +4,10 @@ let player = {
 };
 
 let cards = [];
+let dealerCards = [];
 let total = 0;
+let isDealerAlive = false;
+let hasDealerBlackJack = false;
 let hasBlackJack = false;
 let isAlive = false;
 let message = "";
@@ -19,6 +22,8 @@ let hitButton = document.getElementById('hit-button');
 let standButton = document.getElementById('stand-button')
 let contButton = document.getElementById('continue-button')
 let betInfo = document.getElementById('bet-el')
+let textElmsDiv = document.getElementById('text-elms')
+let dealerEl =document.getElementById('dealer-el')
 
 playerEl.textContent = player.name + ": $" + player.chips;
 
@@ -32,7 +37,22 @@ function getRandomCard() {
         return randomNumber;
     }
 }
-
+function dealerFunc(){
+    isDealerAlive = true;
+    dealerEl.textContent = "Dealer's Cards: ";
+    if(isAlive){}
+    if (isDealerAlive === true && hasDealerBlackJack === false) {
+        let dealerCard = getRandomCard();
+        dealerTotal += dealerCard;
+        dealerCards.push(dealerCard);
+        renderGame();
+    }
+    if(cards<22 && cards > dealerCards){
+        message = 'You won the game!'
+        dealerEl.textContent = message
+    }
+    
+}
 function placeBet() {
     betInputDiv.classList.remove('hidden');
     betInputDiv.style.display = 'inline-block';
@@ -59,8 +79,13 @@ function startGame() {
     let secondCard = getRandomCard();
     cards = [firstCard, secondCard];
     total = firstCard + secondCard;
-
+    let firstDealerCard = getRandomCard();
+    let secondDealerCard = getRandomCard();
+    dealerCards = [firstDealerCard,secondDealerCard];
+    dealerTotal = firstDealerCard+secondDealerCard;
+    
     startButton.style.display = 'none';
+    textElmsDiv.style.display = 'inline-block'
     standButton.style.display = 'inline-block';
     hitButton.style.display = 'inline-block';
     placeBetButton.style.display = 'none';
@@ -70,6 +95,7 @@ function startGame() {
 
 function continueFunc() {
     hasBlackJack = false;
+    dealerEl.textContent = "Dealer's cards: "
     cardsEl.textContent = "Your Cards: ";
     totalEl.textContent = "Total: ";
     message = 'Want to play a round?';
@@ -96,12 +122,19 @@ function timeout() {
 
 function renderGame() {
     let betValue = document.getElementById('bet').value; 
+    betInfo.style.display = 'inline-block'
+    betInfo.textContent = 'Your bet: '+ '$' +betValue
+
+    dealerEl.textContent = "Dealer's Cards: ";
+    for (let i = 0; i < dealerCards.length; i++) {
+        dealerEl.textContent += dealerCards[i] + " ";
+    }
+
     cardsEl.textContent = "Your Cards: ";
     for (let i = 0; i < cards.length; i++) {
         cardsEl.textContent += cards[i] + " ";
     }
-    betInfo.style.display = 'inline-block'
-    betInfo.textContent = 'Your bet: '+ '$' +betValue
+
     totalEl.textContent = "Total: " + total;
     if (total <= 20) {
         message = "Do you want to HIT or STAND?";

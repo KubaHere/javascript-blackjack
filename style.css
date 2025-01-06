@@ -17,6 +17,9 @@ button{
     align-items: center;    
     margin: 0; 
 }
+#message-el{
+    font-size: 3vh;
+}
 #start-bet-btns{
     display: flex;
     flex-direction: column;
@@ -26,8 +29,18 @@ button{
     margin-top: 0;
     margin-bottom: 0;
     display: none;
-    
 }
+
+#text-elms{
+    display:none;
+}
+#dealer-el{
+    margin-top:0;
+    margin-bottom: 16px;
+    color:red;
+    font-size: 3vh;
+}
+
 
 #bet-input {
     display: none; 
