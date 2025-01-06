@@ -18,7 +18,7 @@ let startButton = document.getElementById('start-button');
 let hitButton = document.getElementById('hit-button');
 let standButton = document.getElementById('stand-button')
 let contButton = document.getElementById('continue-button')
-
+let betInfo = document.getElementById('bet-el')
 
 playerEl.textContent = player.name + ": $" + player.chips;
 
@@ -45,13 +45,14 @@ function submitBet() {
         message = `You placed a bet of $${betValue}!`;
         messageEl.textContent = message;
         betInputDiv.classList.add('hidden');
+        player.chips -= betValue;
+        playerEl.textContent = player.name + ": $" + player.chips;
     } else {
         message = 'Please enter a valid bet (within your chip balance).';
         messageEl.textContent = message;
     }
     betInputDiv.style.display = 'none'
 }
-
 function startGame() {
     isAlive = true;
     let firstCard = getRandomCard();
@@ -94,14 +95,17 @@ function timeout() {
 }
 
 function renderGame() {
+    let betValue = document.getElementById('bet').value; 
     cardsEl.textContent = "Your Cards: ";
     for (let i = 0; i < cards.length; i++) {
         cardsEl.textContent += cards[i] + " ";
     }
-
+    betInfo.style.display = 'inline-block'
+    betInfo.textContent = 'Your bet: '+ '$' +betValue
     totalEl.textContent = "Total: " + total;
     if (total <= 20) {
         message = "Do you want to HIT or STAND?";
+
     } else if (total === 21) {
         message = "You've got <span id='win-txt'>Blackjack</span>!";
         timeout();
