@@ -6,6 +6,7 @@ let player = {
 let cards = [];
 let dealerCards = [];
 let total = 0;
+let dealerTotal = 0;
 let isDealerAlive = false;
 let hasDealerBlackJack = false;
 let hasBlackJack = false;
@@ -37,20 +38,9 @@ function getRandomCard() {
         return randomNumber;
     }
 }
-function dealerFunc(){
+function dealerAlg(){
     isDealerAlive = true;
-    dealerEl.textContent = "Dealer's Cards: ";
-    if(isAlive){}
-    if (isDealerAlive === true && hasDealerBlackJack === false) {
-        let dealerCard = getRandomCard();
-        dealerTotal += dealerCard;
-        dealerCards.push(dealerCard);
-        renderGame();
-    }
-    if(cards<22 && cards > dealerCards){
-        message = 'You won the game!'
-        dealerEl.textContent = message
-    }
+    
     
 }
 function placeBet() {
@@ -134,7 +124,10 @@ function renderGame() {
     for (let i = 0; i < cards.length; i++) {
         cardsEl.textContent += cards[i] + " ";
     }
-
+    if(total<22 && total > dealerTotal){
+        message = 'You won the game!'
+        dealerEl.textContent = message
+    }
     totalEl.textContent = "Total: " + total;
     if (total <= 20) {
         message = "Do you want to HIT or STAND?";
