@@ -25,6 +25,7 @@ let contButton = document.getElementById('continue-button')
 let betInfo = document.getElementById('bet-el')
 let textElmsDiv = document.getElementById('text-elms')
 let dealerEl =document.getElementById('dealer-el')
+let dealerInfo = document.getElementById('dealer-info')
 
 playerEl.textContent = player.name + ": $" + player.chips;
 
@@ -39,8 +40,21 @@ function getRandomCard() {
     }
 }
 function dealerAlg(){
-    isDealerAlive = true;
+    let dealerCard = getRandomCard()
     
+    if(dealerTotal <17){
+        dealerTotal += dealerCard
+        dealerCards.push(dealerCard);
+    }
+    else if(dealerTotal === 21){
+        message = 'Dealer has a BlackJack!'
+        dealerInfo.textContent = message
+        dealerInfo.style.display = 'inline-block'
+    }
+    else if(dealerTotal >17 && dealerTotal <22){
+        standFunc()
+    }
+
     
 }
 function placeBet() {
@@ -75,11 +89,11 @@ function startGame() {
     dealerTotal = firstDealerCard+secondDealerCard;
     
     startButton.style.display = 'none';
-    textElmsDiv.style.display = 'inline-block'
+    textElmsDiv.style.display = 'flex'
     standButton.style.display = 'inline-block';
     hitButton.style.display = 'inline-block';
     placeBetButton.style.display = 'none';
-
+    dealerAlg();
     renderGame();
 }
 
@@ -93,6 +107,9 @@ function continueFunc() {
     contButton.style.display = 'none';
     startButton.style.display = 'inline-block';
     placeBetButton.style.display = 'inline-block';
+}
+function standFunc(){
+    
 }
 
 function resetGame() {
@@ -123,10 +140,6 @@ function renderGame() {
     cardsEl.textContent = "Your Cards: ";
     for (let i = 0; i < cards.length; i++) {
         cardsEl.textContent += cards[i] + " ";
-    }
-    if(total<22 && total > dealerTotal){
-        message = 'You won the game!'
-        dealerEl.textContent = message
     }
     totalEl.textContent = "Total: " + total;
     if (total <= 20) {

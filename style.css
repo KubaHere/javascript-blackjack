@@ -17,6 +17,12 @@ button{
     align-items: center;    
     margin: 0; 
 }
+#dealer-info{
+    display: none;
+    margin-top: 0;
+    margin-bottom: 16px;
+    color:red;
+}
 #message-el{
     font-size: 3vh;
 }
@@ -33,6 +39,8 @@ button{
 
 #text-elms{
     display:none;
+    flex-direction: column;
+    
 }
 #dealer-el{
     margin-top:0;
