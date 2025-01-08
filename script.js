@@ -53,6 +53,7 @@ function dealerAlg(){
     }
     else if(dealerTotal >17 && dealerTotal <22){
         standFunc()
+        
     }
 
     
