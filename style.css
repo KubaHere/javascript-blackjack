@@ -21,7 +21,7 @@ button{
     display: none;
     margin-top: 0;
     margin-bottom: 16px;
-    color:red;
+    color:rgb(255, 255, 255);
 }
 #message-el{
     font-size: 3vh;
@@ -45,7 +45,7 @@ button{
 #dealer-el{
     margin-top:0;
     margin-bottom: 16px;
-    color:red;
+    color:rgb(255, 0, 0);
     font-size: 3vh;
 }
 
