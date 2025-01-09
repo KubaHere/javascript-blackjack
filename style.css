@@ -17,6 +17,13 @@ button{
     align-items: center;    
     margin: 0; 
 }
+#total-el{
+    margin-top: 0;
+}
+#dealer-totalEl{
+    margin-top: 0;
+    color:black;
+}
 #dealer-info{
     display: none;
     margin-top: 0;
@@ -33,10 +40,13 @@ button{
 }
 #bet-el{
     margin-top: 0;
-    margin-bottom: 0;
+    margin-bottom: 16px;
     display: none;
 }
 
+#cards-el{
+    margin-top: 0;
+}
 #text-elms{
     display:none;
     flex-direction: column;

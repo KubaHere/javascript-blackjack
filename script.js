@@ -28,6 +28,7 @@ let betInfo = document.getElementById('bet-el')
 let textElmsDiv = document.getElementById('text-elms')
 let dealerEl =document.getElementById('dealer-el')
 let dealerInfo = document.getElementById('dealer-info')
+let dealerTotalEl = document.getElementById('dealer-totalEl')
 
 playerEl.textContent = player.name + ": $" + player.chips;
 
@@ -168,7 +169,7 @@ function resetGame() {
 function timeout() {
     setTimeout(function () {
         resetGame();
-    }, 1500);
+    }, 3000);
 }
 
 function renderGame() {
@@ -177,6 +178,7 @@ function renderGame() {
     betInfo.textContent = 'Your bet: '+ '$' +betValue
     dealerAdd();
     playerAdd();
+    dealerTotalEl.text
     totalEl.textContent = "Total: " + total;
     if (total <= 20) {
         message = "Do you want to HIT or STAND?";
