@@ -178,26 +178,38 @@ function renderGame() {
     betInfo.textContent = 'Your bet: '+ '$' +betValue
     dealerAdd();
     playerAdd();
-    dealerTotalEl.text
+    dealerTotalEl.textContent = "Dealer's Total: " + dealerTotal
     totalEl.textContent = "Total: " + total;
     if (total <= 20) {
-        message = "Do you want to HIT or STAND?";
+        if(standClicked && dealerTotal > total && dealerTotal<22){
+            message = 'Dealer Won!'
+        }
+        else if(standClicked && dealerTotal < total && total <22){
+            message = 'You Won!'
+        }
+        else if(standClicked && dealerTotal>21 && total<22){
+            message = "Dealer <span id='busted-txt'>BUSTED</span>, You WON!"
+        }
 
     } else if (total === 21) {
-        message = "You've got <span id='win-txt'>Blackjack</span>!";
-        timeout();
         hasBlackJack = true;
         hitButton.style.display = 'none';
         standButton.style.display = 'none';
         if(dealerCards.length === 1){
             upCard();
         }
+        else if(dealerTotal< total){
+            message = 'You have a BlackJack and WON!'
+
+        }
+        else if(dealerTotal === total){
+            message = "Dealer also has BlackJack, PUSH!"
+        }
     } else {
         message = "You <span id='busted-txt'>BUSTED</span>!";
         isAlive = false;
         hitButton.style.display = 'none';
         standButton.style.display = 'none';
-        timeout();
         if(dealerCards.length === 1){
             upCard();
         }
