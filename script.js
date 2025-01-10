@@ -12,6 +12,8 @@ let hasDealerBlackJack = false;
 let hasBlackJack = false;
 let isAlive = false;
 let message = "";
+let playerWin = false;
+let dealerWin = false;
 let standClicked = false;
 let validBet = false;
 let messageEl = document.getElementById("message-el");
@@ -68,11 +70,13 @@ function dealerAlg() {
         message = "Dealer has a BlackJack!";
         dealerInfo.textContent = message;
         dealerInfo.style.display = "inline-block";
+        
     }
     else if (dealerTotal > 21) {
-        message = "Dealer <span id='busted-txt'>BUSTED</span>!";
+        message = "Dealer <span id='busted-txt'>BUSTED</span> with "+ dealerTotal +" !";
         dealerInfo.innerHTML = message; 
         dealerInfo.style.display = "inline-block";
+        
     }
     else {
         message = `Dealer stands with ${dealerTotal}.`;
@@ -135,6 +139,12 @@ function startGame() {
 
 function continueFunc() {
     hasBlackJack = false;
+    standClicked = false;
+    playerWin = false;
+    dealerWin = false;
+    hasDealerBlackJack = false;
+    validBet = false;
+    standButton.disabled = false;
     dealerEl.textContent = "Dealer's cards: "
     cardsEl.textContent = "Your Cards: ";
     totalEl.textContent = "Total: ";
@@ -163,13 +173,15 @@ function resetGame() {
     contButton.style.display = 'inline-block';
     hitButton.style.display = 'none';
     textElmsDiv.style.display = 'none';
-    standClicked = false;
+    standButton.style.display = 'none';
+    standButton.disabled = false;
+
 }
 
 function timeout() {
     setTimeout(function () {
         resetGame();
-    }, 3000);
+    }, 2500);
 }
 
 function renderGame() {
@@ -178,20 +190,36 @@ function renderGame() {
     betInfo.textContent = 'Your bet: '+ '$' +betValue
     dealerAdd();
     playerAdd();
-    dealerTotalEl.textContent = "Dealer's Total: " + dealerTotal
     totalEl.textContent = "Total: " + total;
     if (total <= 20) {
         if(standClicked && dealerTotal > total && dealerTotal<22){
             message = 'Dealer Won!'
+            dealerWin = true;
+            isAlive = false;
+            timeout()
         }
         else if(standClicked && dealerTotal < total && total <22){
             message = 'You Won!'
+            playerWin = true;
+            isDealerAlive = false;
+            isAlive = false;
+            timeout()
         }
         else if(standClicked && dealerTotal>21 && total<22){
             message = "Dealer <span id='busted-txt'>BUSTED</span>, You WON!"
+            dealerWin = true;
+            isDealerAlive = false;    
+            isAlive = false;
+            timeout()
         }
-
-    } else if (total === 21) {
+        else if(standClicked && dealerTotal === total){
+            message = "It's a PUSH!"
+            timeout();
+            isDealerAlive = false;
+            isAlive =false;
+        }
+    }
+    else if (total === 21) {
         hasBlackJack = true;
         hitButton.style.display = 'none';
         standButton.style.display = 'none';
@@ -199,14 +227,28 @@ function renderGame() {
             upCard();
         }
         else if(dealerTotal< total){
-            message = 'You have a BlackJack and WON!'
-
+            message ="You have a <span id='win-text'>BlackJack<span/> and WON!"
+            playerWin = true;
+            isDealerAlive = false;
+            isAlive = false;
+            timeout()
         }
         else if(dealerTotal === total){
             message = "Dealer also has BlackJack, PUSH!"
+            playerWin,dealerWin = true
+            isDealerAlive = false;
+            isAlive =false;
+            timeout();
         }
-    } else {
-        message = "You <span id='busted-txt'>BUSTED</span>!";
+    }
+    else {
+        if(dealerTotal < 22){
+            message= "You <span id='busted-txt'>BUSTED</span>, Dealer WON!"
+            dealerWin = true;
+            isDealerAlive = false;
+            isAlive = false;
+            timeout();
+        }
         isAlive = false;
         hitButton.style.display = 'none';
         standButton.style.display = 'none';
@@ -219,7 +261,6 @@ function renderGame() {
     messageEl.innerHTML = message;
     
 }
-
 function newCard() {
     if (isAlive && !hasBlackJack && !standClicked) {
         let card = getRandomCard();
