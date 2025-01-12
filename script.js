@@ -35,35 +35,67 @@ let dealerTotalEl = document.getElementById('dealer-totalEl')
 playerEl.textContent = player.name + ": $" + player.chips;
 
 
-function dealerAdd(){
-    dealerEl.textContent = "Dealer's Cards: ";
+function dealerAdd() {
+    const dealerCardsContainer = document.getElementById('dealer-cards');
+    dealerCardsContainer.innerHTML = ""; // Clear previous cards
+
     for (let i = 0; i < dealerCards.length; i++) {
-        dealerEl.textContent += dealerCards[i] + " ";
+        const card = dealerCards[i];
+        const cardImg = document.createElement('img');
+        if (i === 0 && !standClicked) {
+            cardImg.src = `cards/card_back.png`; // Hide the first card until stand is clicked
+            cardImg.alt = "Hidden Card";
+        } else {
+            cardImg.src = `cards/${card.rank}_of_${card.suit}.png`;
+            cardImg.alt = `${card.rank} of ${card.suit}`;
+        }
+        cardImg.classList.add('card');
+        dealerCardsContainer.appendChild(cardImg);
     }
 }
-function playerAdd(){
-    cardsEl.textContent = "Your Cards: ";
-    for (let i = 0; i < cards.length; i++) {
-        cardsEl.textContent += cards[i] + " ";
+
+
+function playerAdd() {
+    const playerCardsContainer = document.getElementById('player-cards');
+    playerCardsContainer.innerHTML = ""; // Clear previous cards
+
+    for (let card of cards) {
+        const cardImg = document.createElement('img');
+        cardImg.src = `cards/${card.rank}_of_${card.suit}.png`;
+        
+        cardImg.alt = `${card.rank} of ${card.suit}`;
+        cardImg.classList.add('card'); // Add CSS class for styling
+        playerCardsContainer.appendChild(cardImg); // Add the image to the container
     }
 }
+
+
 
 
 function getRandomCard() {
-    let randomNumber = Math.floor(Math.random() * 13) + 1;
-    if (randomNumber > 10) {
-        return 10;
-    } else if (randomNumber === 1) {
-        return 11;
-    } else {
-        return randomNumber;
+    const suits = ["hearts", "diamonds", "clubs", "spades"];
+    const ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10,11, "jack", "queen", "king"];
+    
+    let randomSuit = suits[Math.floor(Math.random() * suits.length)];
+    let randomRank = ranks[Math.floor(Math.random() * ranks.length)];
+
+    let cardValue;
+    if (randomRank === "jack" || randomRank === "queen" || randomRank === "king") {
+        cardValue = 10;
+    } // Ace initially counts as 11
+    else {
+        cardValue = randomRank;
     }
+
+    return { rank: randomRank, suit: randomSuit, value: cardValue };
 }
+
 function dealerAlg() {
     while (dealerTotal < 17) {
         let dealerCard = getRandomCard();
         dealerTotal += dealerCard;
         dealerCards.push(dealerCard);
+        dealerAdd();
     }
     if (dealerTotal === 21) {
         hasDealerBlackJack = true;
@@ -121,15 +153,19 @@ function startGame() {
         let firstCard = getRandomCard();
         let secondCard = getRandomCard();
         cards = [firstCard, secondCard];
-        total = firstCard + secondCard;
+        total = firstCard.value + secondCard.value
+
         let firstDealerCard = getRandomCard();
         dealerCards = [firstDealerCard];
-        dealerTotal = firstDealerCard;
+        dealerTotal = firstDealerCard.value;
+
         startButton.style.display = 'none';
         textElmsDiv.style.display = 'flex'
         standButton.style.display = 'inline-block';
         hitButton.style.display = 'inline-block';
         placeBetButton.style.display = 'none';
+        playerAdd();
+        dealerAdd();
         renderGame();}
     else{
         message = "You haven't placed a bet yet, You can't play!"
@@ -266,6 +302,7 @@ function newCard() {
         let card = getRandomCard();
         total += card;
         cards.push(card);
+        playerAdd();
         renderGame();
     }
 }
