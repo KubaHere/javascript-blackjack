@@ -57,15 +57,14 @@ function dealerAdd() {
 
 function playerAdd() {
     const playerCardsContainer = document.getElementById('player-cards');
-    playerCardsContainer.innerHTML = ""; // Clear previous cards
-
+    playerCardsContainer.innerHTML = ""; 
     for (let card of cards) {
         const cardImg = document.createElement('img');
         cardImg.src = `cards/${card.rank}_of_${card.suit}.png`;
         
         cardImg.alt = `${card.rank} of ${card.suit}`;
-        cardImg.classList.add('card'); // Add CSS class for styling
-        playerCardsContainer.appendChild(cardImg); // Add the image to the container
+        cardImg.classList.add('card'); 
+        playerCardsContainer.appendChild(cardImg); 
     }
 }
 
@@ -74,7 +73,7 @@ function playerAdd() {
 
 function getRandomCard() {
     const suits = ["hearts", "diamonds", "clubs", "spades"];
-    const ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10,11, "jack", "queen", "king"];
+    const ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10,"ace", "jack", "queen", "king"];
     
     let randomSuit = suits[Math.floor(Math.random() * suits.length)];
     let randomRank = ranks[Math.floor(Math.random() * ranks.length)];
@@ -82,7 +81,10 @@ function getRandomCard() {
     let cardValue;
     if (randomRank === "jack" || randomRank === "queen" || randomRank === "king") {
         cardValue = 10;
-    } // Ace initially counts as 11
+    }
+    else if(randomRank === "ace"){
+        cardValue = 11;
+    } 
     else {
         cardValue = randomRank;
     }
@@ -112,8 +114,7 @@ function dealerAlg() {
     }
     else {
         message = `Dealer stands with ${dealerTotal}.`;
-        dealerInfo.textContent = message;
-        dealerInfo.style.display = "inline-block";
+        
     }
     renderGame();
 }
@@ -142,7 +143,7 @@ function submitBet() {
 function upCard(){
     let secondDealerCard = getRandomCard();
     if(hasBlackJack|| !isAlive || standClicked){
-        dealerTotal += secondDealerCard;
+        dealerTotal += secondDealerCard.value;
         dealerCards.push(secondDealerCard);
         dealerAlg();
     }
@@ -184,6 +185,7 @@ function continueFunc() {
     dealerEl.textContent = "Dealer's cards: "
     cardsEl.textContent = "Your Cards: ";
     totalEl.textContent = "Total: ";
+    dealerTotalEl.textContent = "Dealer's total: "
     message = 'Want to play a round?';
     messageEl.textContent = message;
     dealerInfo.textContent = ""; 
@@ -226,6 +228,7 @@ function renderGame() {
     betInfo.textContent = 'Your bet: '+ '$' +betValue
     dealerAdd();
     playerAdd();
+    dealerTotalEl.textContent= "Dealer's total: " + dealerTotal
     totalEl.textContent = "Total: " + total;
     if (total <= 20) {
         if(standClicked && dealerTotal > total && dealerTotal<22){
