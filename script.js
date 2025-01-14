@@ -16,6 +16,7 @@ let playerWin = false;
 let dealerWin = false;
 let standClicked = false;
 let validBet = false;
+let messageI = "";
 let messageEl = document.getElementById("message-el");
 let totalEl = document.getElementById("total-el");
 let cardsEl = document.getElementById("cards-el");
@@ -37,13 +38,13 @@ playerEl.textContent = player.name + ": $" + player.chips;
 
 function dealerAdd() {
     const dealerCardsContainer = document.getElementById('dealer-cards');
-    dealerCardsContainer.innerHTML = ""; // Clear previous cards
+    dealerCardsContainer.innerHTML = ""; 
 
     for (let i = 0; i < dealerCards.length; i++) {
         const card = dealerCards[i];
         const cardImg = document.createElement('img');
         if (i === 0 && !standClicked) {
-            cardImg.src = `cards/card_back.png`; // Hide the first card until stand is clicked
+            cardImg.src = `cards/card_back.png`; 
             cardImg.alt = "Hidden Card";
         } else {
             cardImg.src = `cards/${card.rank}_of_${card.suit}.png`;
@@ -53,7 +54,6 @@ function dealerAdd() {
         dealerCardsContainer.appendChild(cardImg);
     }
 }
-
 
 function playerAdd() {
     const playerCardsContainer = document.getElementById('player-cards');
@@ -67,9 +67,6 @@ function playerAdd() {
         playerCardsContainer.appendChild(cardImg); 
     }
 }
-
-
-
 
 function getRandomCard() {
     const suits = ["hearts", "diamonds", "clubs", "spades"];
@@ -88,32 +85,32 @@ function getRandomCard() {
     else {
         cardValue = randomRank;
     }
-
     return { rank: randomRank, suit: randomSuit, value: cardValue };
 }
 
 function dealerAlg() {
     while (dealerTotal < 17) {
         let dealerCard = getRandomCard();
-        dealerTotal += dealerCard;
+        dealerTotal += dealerCard.value;
         dealerCards.push(dealerCard);
         dealerAdd();
     }
     if (dealerTotal === 21) {
         hasDealerBlackJack = true;
-        message = "Dealer has a BlackJack!";
-        dealerInfo.textContent = message;
+        messageI = "Dealer has a BlackJack!";
+        dealerInfo.textContent = messageI;
         dealerInfo.style.display = "inline-block";
         
     }
     else if (dealerTotal > 21) {
-        message = "Dealer <span id='busted-txt'>BUSTED</span> with "+ dealerTotal +" !";
-        dealerInfo.innerHTML = message; 
+        messageI = "Dealer <span id='busted-txt'>BUSTED</span> with "+ dealerTotal +" !";
+        dealerInfo.innerHTML = messageI; 
         dealerInfo.style.display = "inline-block";
         
     }
     else {
-        message = `Dealer stands with ${dealerTotal}.`;
+        messageI = `Dealer stands with ` + dealerTotal;
+        dealerInfo.textContent = messageI;
         
     }
     renderGame();
@@ -142,11 +139,9 @@ function submitBet() {
 }
 function upCard(){
     let secondDealerCard = getRandomCard();
-    if(hasBlackJack|| !isAlive || standClicked){
-        dealerTotal += secondDealerCard.value;
-        dealerCards.push(secondDealerCard);
-        dealerAlg();
-    }
+    dealerTotal += secondDealerCard.value;
+    dealerCards.push(secondDealerCard);
+    dealerAdd()  
 }
 function startGame() {
     if(validBet){
@@ -167,7 +162,9 @@ function startGame() {
         placeBetButton.style.display = 'none';
         playerAdd();
         dealerAdd();
-        renderGame();}
+        upCard();
+        renderGame();
+        }
     else{
         message = "You haven't placed a bet yet, You can't play!"
         messageEl.textContent = message
@@ -198,13 +195,14 @@ function standFunc() {
     if (!standClicked) {  
         standClicked = true;  
         standButton.disabled = true;
-        upCard();   
+        upCard();
+        dealerAlg();   
     }
 }
 
 
 function resetGame() {
-    if (isAlive === false || hasBlackJack) {
+    if (isAlive === false || hasBlackJack || hasDealerBlackJack || !isDealerAlive) {
         message = 'Want to play another round?';
     }
     messageEl.textContent = message;
@@ -219,7 +217,7 @@ function resetGame() {
 function timeout() {
     setTimeout(function () {
         resetGame();
-    }, 2500);
+    }, 5000);
 }
 
 function renderGame() {
@@ -270,7 +268,7 @@ function renderGame() {
             playerWin = true;
             isDealerAlive = false;
             isAlive = false;
-            timeout()
+            timeout();
         }
         else if(dealerTotal === total){
             message = "Dealer also has BlackJack, PUSH!"
@@ -287,13 +285,13 @@ function renderGame() {
             isDealerAlive = false;
             isAlive = false;
             timeout();
+            upCard();
+            
         }
         isAlive = false;
         hitButton.style.display = 'none';
         standButton.style.display = 'none';
-        if(dealerCards.length === 1){
-            upCard();
-        }
+        
         
         
     }
@@ -303,7 +301,7 @@ function renderGame() {
 function newCard() {
     if (isAlive && !hasBlackJack && !standClicked) {
         let card = getRandomCard();
-        total += card;
+        total += card.value;
         cards.push(card);
         playerAdd();
         renderGame();
