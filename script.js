@@ -17,6 +17,7 @@ let dealerWin = false;
 let standClicked = false;
 let validBet = false;
 let messageI = "";
+let secondDealerCard = getRandomCard();
 let messageEl = document.getElementById("message-el");
 let totalEl = document.getElementById("total-el");
 let cardsEl = document.getElementById("cards-el");
@@ -46,9 +47,11 @@ function dealerAdd() {
         if (i === 0 && !standClicked) {
             cardImg.src = `cards/card_back.png`; 
             cardImg.alt = "Hidden Card";
-        } else {
+        }
+        else{
             cardImg.src = `cards/${card.rank}_of_${card.suit}.png`;
             cardImg.alt = `${card.rank} of ${card.suit}`;
+
         }
         cardImg.classList.add('card');
         dealerCardsContainer.appendChild(cardImg);
@@ -138,7 +141,6 @@ function submitBet() {
     betInputDiv.style.display = 'none'
 }
 function upCard(){
-    let secondDealerCard = getRandomCard();
     dealerTotal += secondDealerCard.value;
     dealerCards.push(secondDealerCard);
     dealerAdd()  
@@ -199,6 +201,7 @@ function standFunc() {
         dealerAlg();   
     }
 }
+
 
 
 function resetGame() {
@@ -269,6 +272,7 @@ function renderGame() {
             isDealerAlive = false;
             isAlive = false;
             timeout();
+            dealerAdd();
         }
         else if(dealerTotal === total){
             message = "Dealer also has BlackJack, PUSH!"
@@ -276,6 +280,7 @@ function renderGame() {
             isDealerAlive = false;
             isAlive =false;
             timeout();
+            dealerAdd();
         }
     }
     else {
