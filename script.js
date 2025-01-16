@@ -44,9 +44,13 @@ function dealerAdd() {
     for (let i = 0; i < dealerCards.length; i++) {
         const card = dealerCards[i];
         const cardImg = document.createElement('img');
-        if (i === 0 && !standClicked) {
+        if (i === 0 && (!standClicked|| !isAlive || hasBlackJack)) {
             cardImg.src = `cards/card_back.png`; 
             cardImg.alt = "Hidden Card";
+        }
+        else if(!isAlive || hasBlackJack){
+            cardImg.src = `cards/${card.rank}_of_${card.suit}.png`;
+            cardImg.alt = `${card.rank} of ${card.suit}`;
         }
         else{
             cardImg.src = `cards/${card.rank}_of_${card.suit}.png`;
@@ -57,7 +61,6 @@ function dealerAdd() {
         dealerCardsContainer.appendChild(cardImg);
     }
 }
-
 function playerAdd() {
     const playerCardsContainer = document.getElementById('player-cards');
     playerCardsContainer.innerHTML = ""; 
@@ -134,11 +137,12 @@ function submitBet() {
         betInputDiv.classList.add('hidden');
         player.chips -= betValue;
         playerEl.textContent = player.name + ": $" + player.chips;
+        betInputDiv.style.display = 'none'
     } else {
         message = 'Please enter a valid bet (within your chip balance).';
         messageEl.textContent = message;
     }
-    betInputDiv.style.display = 'none'
+    
 }
 function upCard(){
     dealerTotal += secondDealerCard.value;
@@ -148,6 +152,7 @@ function upCard(){
 function startGame() {
     if(validBet){
         isAlive = true;
+        isDealerAlive = true;
         let firstCard = getRandomCard();
         let secondCard = getRandomCard();
         cards = [firstCard, secondCard];
@@ -197,7 +202,6 @@ function standFunc() {
     if (!standClicked) {  
         standClicked = true;  
         standButton.disabled = true;
-        upCard();
         dealerAlg();   
     }
 }
@@ -220,15 +224,21 @@ function resetGame() {
 function timeout() {
     setTimeout(function () {
         resetGame();
-    }, 5000);
+    }, 4000);
 }
 
 function renderGame() {
     let betValue = document.getElementById('bet').value; 
     betInfo.style.display = 'inline-block'
     betInfo.textContent = 'Your bet: '+ '$' +betValue
-    dealerAdd();
     playerAdd();
+    if (!isAlive || hasBlackJack || dealerWin) {
+        dealerAdd(); 
+    }
+    else if(standClicked) {
+        dealerAdd();
+    }
+    
     dealerTotalEl.textContent= "Dealer's total: " + dealerTotal
     totalEl.textContent = "Total: " + total;
     if (total <= 20) {
@@ -263,10 +273,8 @@ function renderGame() {
         hasBlackJack = true;
         hitButton.style.display = 'none';
         standButton.style.display = 'none';
-        if(dealerCards.length === 1){
-            upCard();
-        }
-        else if(dealerTotal< total){
+        
+        if(dealerTotal< total){
             message ="You have a <span id='win-text'>BlackJack<span/> and WON!"
             playerWin = true;
             isDealerAlive = false;
@@ -283,23 +291,22 @@ function renderGame() {
             dealerAdd();
         }
     }
+    
     else {
+        isAlive = false;
         if(dealerTotal < 22){
             message= "You <span id='busted-txt'>BUSTED</span>, Dealer WON!"
             dealerWin = true;
-            isDealerAlive = false;
-            isAlive = false;
             timeout();
-            upCard();
-            
+            dealerAdd();
         }
-        isAlive = false;
         hitButton.style.display = 'none';
         standButton.style.display = 'none';
         
         
         
     }
+    
     messageEl.innerHTML = message;
     
 }
