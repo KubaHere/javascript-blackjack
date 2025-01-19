@@ -44,15 +44,11 @@ function dealerAdd() {
     for (let i = 0; i < dealerCards.length; i++) {
         const card = dealerCards[i];
         const cardImg = document.createElement('img');
-        if (i === 0 && (!standClicked|| !isAlive || hasBlackJack)) {
+        if (i === 0 && !standClicked && isAlive && !hasBlackJack) {
             cardImg.src = `cards/card_back.png`; 
             cardImg.alt = "Hidden Card";
         }
-        else if(!isAlive || hasBlackJack){
-            cardImg.src = `cards/${card.rank}_of_${card.suit}.png`;
-            cardImg.alt = `${card.rank} of ${card.suit}`;
-        }
-        else{
+        else{    
             cardImg.src = `cards/${card.rank}_of_${card.suit}.png`;
             cardImg.alt = `${card.rank} of ${card.suit}`;
 
@@ -144,6 +140,11 @@ function submitBet() {
     }
     
 }
+function betWin(){
+    let betValue = document.getElementById('bet').value
+    winBet = betValue * 2
+    player.chips += winBet
+}
 function upCard(){
     dealerTotal += secondDealerCard.value;
     dealerCards.push(secondDealerCard);
@@ -224,7 +225,7 @@ function resetGame() {
 function timeout() {
     setTimeout(function () {
         resetGame();
-    }, 4000);
+    }, 3500);
 }
 
 function renderGame() {
@@ -232,10 +233,7 @@ function renderGame() {
     betInfo.style.display = 'inline-block'
     betInfo.textContent = 'Your bet: '+ '$' +betValue
     playerAdd();
-    if (!isAlive || hasBlackJack || dealerWin) {
-        dealerAdd(); 
-    }
-    else if(standClicked) {
+    if(standClicked) {
         dealerAdd();
     }
     
@@ -253,6 +251,7 @@ function renderGame() {
             playerWin = true;
             isDealerAlive = false;
             isAlive = false;
+            
             timeout()
         }
         else if(standClicked && dealerTotal>21 && total<22){
@@ -260,6 +259,7 @@ function renderGame() {
             dealerWin = true;
             isDealerAlive = false;    
             isAlive = false;
+            
             timeout()
         }
         else if(standClicked && dealerTotal === total){
