@@ -1,7 +1,7 @@
 body {
     font-family:'Oswald';
-    background-color:rgb(23, 100, 46);
-    background-size: cover;
+    background-image: url(images/table2.jpg);
+    background-size: 100%;
     font-weight: bold;
     color: white;
     text-align: center;
@@ -9,6 +9,7 @@ body {
 button{
     cursor: pointer;
     border-radius: 4px;
+    
 }
 .cards-container {
     display: flex;
@@ -48,7 +49,7 @@ button{
 }
 #dealer-totalEl{
     margin-top: 0;
-    color:black;
+    color:rgb(255, 255, 255);
 }
 #dealer-info{
     display: none;

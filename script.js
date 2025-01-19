@@ -235,9 +235,14 @@ function renderGame() {
     playerAdd();
     if(standClicked) {
         dealerAdd();
+        dealerTotalEl.textContent= "Dealer's total: " + dealerTotal 
     }
-    
-    dealerTotalEl.textContent= "Dealer's total: " + dealerTotal
+    else if(!isAlive || hasBlackJack){
+        dealerTotalEl.textContent= "Dealer's total: " + dealerTotal 
+    }
+    else if(!standClicked && isAlive && !hasBlackJack){
+        dealerTotalEl.textContent= "Dealer's total: " + secondDealerCard.value 
+    }
     totalEl.textContent = "Total: " + total;
     if (total <= 20) {
         if(standClicked && dealerTotal > total && dealerTotal<22){
