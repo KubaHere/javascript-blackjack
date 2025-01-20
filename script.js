@@ -246,7 +246,7 @@ function resetGame() {
 function timeout() {
     setTimeout(function () {
         resetGame();
-    }, 3500);
+    }, 2800);
 }
 
 function renderGame() {
@@ -290,6 +290,7 @@ function renderGame() {
         }
         else if(standClicked && dealerTotal === total){
             message = "It's a PUSH!"
+            push()
             timeout();
             isAlive =false;
         }
@@ -304,14 +305,15 @@ function renderGame() {
             dealerWin = false;
             isDealerAlive = false;
             isAlive = false;
+            betWin()
             timeout();
             dealerAdd();
         }
         else if(dealerTotal === total){
             message = "Dealer also has BlackJack, PUSH!"
-            
             isDealerAlive = false;
             isAlive =false;
+            push()
             timeout();
             dealerAdd();
         }
@@ -344,4 +346,10 @@ function newCard() {
         playerAdd();
         renderGame();
     }
+}
+function push(){
+    let betValue = document.getElementById('bet').value
+    let winBet = betValue;
+    player.chips += winBet
+    playerEl.textContent = player.name + ': $' + player.chips
 }
