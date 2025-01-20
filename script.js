@@ -142,7 +142,8 @@ function submitBet() {
 }
 function betWin(){
     let betValue = document.getElementById('bet').value
-    winBet = betValue * 2
+    console.log(betValue)
+    winBet = betValue * 2;
     player.chips += winBet
 }
 function upCard(){
@@ -213,6 +214,9 @@ function resetGame() {
     if (isAlive === false || hasBlackJack || hasDealerBlackJack || !isDealerAlive) {
         message = 'Want to play another round?';
     }
+    else if(dealerWin){
+        betWin();
+    }
     messageEl.textContent = message;
     contButton.style.display = 'inline-block';
     hitButton.style.display = 'none';
@@ -253,15 +257,14 @@ function renderGame() {
         }
         else if(standClicked && dealerTotal < total && total <22){
             message = 'You Won!'
-            playerWin = true;
+            dealerWin = false;
             isDealerAlive = false;
             isAlive = false;
-            
             timeout()
         }
         else if(standClicked && dealerTotal>21 && total<22){
             message = "Dealer <span id='busted-txt'>BUSTED</span>, You WON!"
-            dealerWin = true;
+            dealerWin = false;
             isDealerAlive = false;    
             isAlive = false;
             
@@ -270,7 +273,6 @@ function renderGame() {
         else if(standClicked && dealerTotal === total){
             message = "It's a PUSH!"
             timeout();
-            isDealerAlive = false;
             isAlive =false;
         }
     }
@@ -281,7 +283,7 @@ function renderGame() {
         
         if(dealerTotal< total){
             message ="You have a <span id='win-text'>BlackJack<span/> and WON!"
-            playerWin = true;
+            dealerWin = false;
             isDealerAlive = false;
             isAlive = false;
             timeout();
@@ -289,7 +291,7 @@ function renderGame() {
         }
         else if(dealerTotal === total){
             message = "Dealer also has BlackJack, PUSH!"
-            playerWin,dealerWin = true
+            
             isDealerAlive = false;
             isAlive =false;
             timeout();
