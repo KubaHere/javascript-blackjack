@@ -94,6 +94,7 @@ function dealerAlg() {
     while (dealerTotal < 17) {
         let dealerCard = getRandomCard();
         dealerTotal += dealerCard.value;
+        dealerTotal = aceDealerConfirm(dealerCards,dealerTotal)
         dealerCards.push(dealerCard);
         dealerAdd();
     }
@@ -140,11 +141,27 @@ function submitBet() {
     }
     
 }
+function aceDealerConfirm(cardsArray, total){
+    for(let card in cardsArray){
+        if(card.rank === 'ace' && dealerTotal >21){
+            dealerTotal -= 10
+        }
+    }
+    return dealerTotal
+}
+function aceUserConfirm(cardsArray, total){
+    for( let card in cardsArray){
+        if(card.rank === 'ace' && total > 21){
+            total -= 10 
+        }
+    }
+    return total;
+}
 function betWin(){
     let betValue = document.getElementById('bet').value
-    console.log(betValue)
-    winBet = betValue * 2;
+    let winBet = betValue * 2;
     player.chips += winBet
+    playerEl.textContent = player.name + ': $' + player.chips
 }
 function upCard(){
     dealerTotal += secondDealerCard.value;
@@ -260,6 +277,7 @@ function renderGame() {
             dealerWin = false;
             isDealerAlive = false;
             isAlive = false;
+            betWin();
             timeout()
         }
         else if(standClicked && dealerTotal>21 && total<22){
@@ -267,7 +285,7 @@ function renderGame() {
             dealerWin = false;
             isDealerAlive = false;    
             isAlive = false;
-            
+            betWin()
             timeout()
         }
         else if(standClicked && dealerTotal === total){
@@ -321,6 +339,7 @@ function newCard() {
     if (isAlive && !hasBlackJack && !standClicked) {
         let card = getRandomCard();
         total += card.value;
+        total = aceUserConfirm(cards, total)
         cards.push(card);
         playerAdd();
         renderGame();
