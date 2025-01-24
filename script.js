@@ -17,7 +17,7 @@ let dealerWin = false;
 let standClicked = false;
 let validBet = false;
 let messageI = "";
-let secondDealerCard = getRandomCard();
+let secondDealerCard = getRandomCard(false);
 let messageEl = document.getElementById("message-el");
 let totalEl = document.getElementById("total-el");
 let cardsEl = document.getElementById("cards-el");
@@ -70,7 +70,7 @@ function playerAdd() {
     }
 }
 
-function getRandomCard() {
+function getRandomCard(isForPlayer) {
     const suits = ["hearts", "diamonds", "clubs", "spades"];
     const ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10,"ace", "jack", "queen", "king"];
     
@@ -81,9 +81,18 @@ function getRandomCard() {
     if (randomRank === "jack" || randomRank === "queen" || randomRank === "king") {
         cardValue = 10;
     }
-    else if(randomRank === "ace"){
+    else if(randomRank === "ace" ){
         cardValue = 11;
-    } 
+        if(isForPlayer && total +cardValue > 21){
+            cardValue = 1;
+        }
+        else if(!isForPlayer && dealerTotal + cardValue > 21){
+            cardValue = 1;
+        }
+    }
+    else if(randomRank === 'ace' && total,dealerTotal > 21){
+        cardValue = 1;
+    }
     else {
         cardValue = randomRank;
     }
@@ -92,9 +101,8 @@ function getRandomCard() {
 
 function dealerAlg() {
     while (dealerTotal < 17) {
-        let dealerCard = getRandomCard();
+        let dealerCard = getRandomCard(false);
         dealerTotal += dealerCard.value;
-        dealerTotal = aceDealerConfirm(dealerCards,dealerTotal)
         dealerCards.push(dealerCard);
         dealerAdd();
     }
@@ -141,22 +149,6 @@ function submitBet() {
     }
     
 }
-function aceDealerConfirm(cardsArray, total){
-    for(let card in cardsArray){
-        if(card.rank === 'ace' && dealerTotal >21){
-            dealerTotal -= 10
-        }
-    }
-    return dealerTotal
-}
-function aceUserConfirm(cardsArray, total){
-    for( let card in cardsArray){
-        if(card.rank === 'ace' && total > 21){
-            total -= 10 
-        }
-    }
-    return total;
-}
 function betWin(){
     let betValue = document.getElementById('bet').value
     let winBet = betValue * 2;
@@ -172,14 +164,16 @@ function startGame() {
     if(validBet){
         isAlive = true;
         isDealerAlive = true;
-        let firstCard = getRandomCard();
-        let secondCard = getRandomCard();
+        let firstCard = getRandomCard(true);
+        let secondCard = getRandomCard(true);
         cards = [firstCard, secondCard];
         total = firstCard.value + secondCard.value
+        // total = adjustAce(cards,total)
 
-        let firstDealerCard = getRandomCard();
+        let firstDealerCard = getRandomCard(false);
         dealerCards = [firstDealerCard];
         dealerTotal = firstDealerCard.value;
+        // dealerTotal = adjustAce(dealerCards, dealerTotal)
 
         startButton.style.display = 'none';
         textElmsDiv.style.display = 'flex'
@@ -339,9 +333,9 @@ function renderGame() {
 }
 function newCard() {
     if (isAlive && !hasBlackJack && !standClicked) {
-        let card = getRandomCard();
+        let card = getRandomCard(true);
         total += card.value;
-        total = aceUserConfirm(cards, total)
+        // total = adjustAce(cards, total)
         cards.push(card);
         playerAdd();
         renderGame();
@@ -353,3 +347,13 @@ function push(){
     player.chips += winBet
     playerEl.textContent = player.name + ': $' + player.chips
 }
+
+// function adjustAce(ace_cards, ace_total){
+//     for(let card of ace_cards){
+//         if(card.rank === 'ace' && ace_total > 21){
+            
+//         }
+
+//     }
+//     return ace_total
+// }
