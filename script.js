@@ -83,27 +83,29 @@ function getRandomCard(isForPlayer) {
     }
     else if(randomRank === "ace" ){
         cardValue = 11;
-        if(isForPlayer && total +cardValue > 21){
-            cardValue = 1;
-        }
-        else if(!isForPlayer && dealerTotal + cardValue > 21){
-            cardValue = 1;
-        }
-    }
-    else if(randomRank === 'ace' && total,dealerTotal > 21){
-        cardValue = 1;
     }
     else {
         cardValue = randomRank;
     }
     return { rank: randomRank, suit: randomSuit, value: cardValue };
 }
-
+function aceAdjust(ace_total,ace_cards){
+    let card = getRandomCard()
+    for(card of ace_cards){
+        if (ace_total > 21 && card.value === 11){
+            ace_total -= 10;
+            card.value = 1;
+        }
+    }
+    return ace_total;
+}
 function dealerAlg() {
     while (dealerTotal < 17) {
-        let dealerCard = getRandomCard(false);
+        let dealerCard = getRandomCard();
         dealerTotal += dealerCard.value;
+        dealerTotal = aceAdjust(dealerTotal, dealerCards)
         dealerCards.push(dealerCard);
+
         dealerAdd();
     }
     if (dealerTotal === 21) {
@@ -164,13 +166,13 @@ function startGame() {
     if(validBet){
         isAlive = true;
         isDealerAlive = true;
-        let firstCard = getRandomCard(true);
-        let secondCard = getRandomCard(true);
+        let firstCard = getRandomCard();
+        let secondCard = getRandomCard();
         cards = [firstCard, secondCard];
         total = firstCard.value + secondCard.value
         // total = adjustAce(cards,total)
 
-        let firstDealerCard = getRandomCard(false);
+        let firstDealerCard = getRandomCard();
         dealerCards = [firstDealerCard];
         dealerTotal = firstDealerCard.value;
         // dealerTotal = adjustAce(dealerCards, dealerTotal)
@@ -218,9 +220,6 @@ function standFunc() {
         dealerAlg();   
     }
 }
-
-
-
 function resetGame() {
     if (isAlive === false || hasBlackJack || hasDealerBlackJack || !isDealerAlive) {
         message = 'Want to play another round?';
@@ -244,6 +243,8 @@ function timeout() {
 }
 
 function renderGame() {
+    total = aceAdjust(total,cards)
+    dealerTotal = aceAdjust(dealerTotal,dealerCards)
     let betValue = document.getElementById('bet').value; 
     betInfo.style.display = 'inline-block'
     betInfo.textContent = 'Your bet: '+ '$' +betValue
@@ -333,9 +334,9 @@ function renderGame() {
 }
 function newCard() {
     if (isAlive && !hasBlackJack && !standClicked) {
-        let card = getRandomCard(true);
+        let card = getRandomCard();
         total += card.value;
-        // total = adjustAce(cards, total)
+        total = aceAdjust(total, cards)
         cards.push(card);
         playerAdd();
         renderGame();
@@ -348,12 +349,3 @@ function push(){
     playerEl.textContent = player.name + ': $' + player.chips
 }
 
-// function adjustAce(ace_cards, ace_total){
-//     for(let card of ace_cards){
-//         if(card.rank === 'ace' && ace_total > 21){
-            
-//         }
-
-//     }
-//     return ace_total
-// }
