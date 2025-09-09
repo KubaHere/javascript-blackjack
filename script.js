@@ -213,6 +213,9 @@ function continueFunc() {
     startButton.style.display = 'inline-block';
     placeBetButton.style.display = 'inline-block';
 }
+function reloadGame() {
+    location.reload();
+}
 function standFunc() {
     if (!standClicked) {  
         standClicked = true;  
