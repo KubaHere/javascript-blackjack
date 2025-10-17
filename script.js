@@ -136,7 +136,7 @@ function placeBet() {
 }
 
 function submitBet() {
-    let betValue = document.getElementById('bet').value; 
+    let betValue = Number(document.getElementById('bet').value);
     if (betValue && betValue > 0 && betValue <= player.chips) {
         validBet = true;
         message = `You placed a bet of $${betValue}!`;
@@ -346,9 +346,8 @@ function newCard() {
     }
 }
 function push(){
-    let betValue = document.getElementById('bet').value
+    let betValue = Number(document.getElementById('bet').value)
     let winBet = betValue;
     player.chips += winBet
     playerEl.textContent = player.name + ': $' + player.chips
 }
-
