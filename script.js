@@ -152,10 +152,10 @@ function submitBet() {
     
 }
 function betWin(){
-    let betValue = document.getElementById('bet').value
+    let betValue = Number(document.getElementById('bet').value);
     let winBet = betValue * 2;
-    player.chips += winBet
-    playerEl.textContent = player.name + ': $' + player.chips
+    player.chips += winBet;
+    playerEl.textContent = player.name + ': $' + player.chips;
 }
 function upCard(){
     dealerTotal += secondDealerCard.value;
